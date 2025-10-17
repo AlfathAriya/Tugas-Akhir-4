@@ -13,18 +13,17 @@ bool isFull() {
 }
 
 void enqueue() {
-    int tiket;
-    cout << "Masukkan nomor tiket: ";
-    cin >> tiket;
-
     if (isFull()) {
         cout << "Antrian penuh! Tidak dapat menambah tiket.\n";
         return;
     }
 
+    int tiket;
+    cout << "Masukkan nomor tiket: ";
+    cin >> tiket;
+
     if (isEmpty()) frontIdx = 0;
-    rearIdx++;
-    q[rearIdx] = tiket;
+    q[++rearIdx] = tiket;
 
     cout << "Tiket nomor " << tiket << " ditambahkan ke antrian.\n";
 }
@@ -41,23 +40,6 @@ void dequeue() {
         frontIdx = rearIdx = -1;
 }
 
-void peek() {
-    if (isEmpty()) {
-        cout << "Antrian kosong!\n";
-        return;
-    }
-    cout << "Tiket paling depan adalah nomor: " << q[frontIdx] << "\n";
-}
-
-void isClear() {
-    if (isEmpty()) {
-        cout << "Antrian sudah kosong.\n";
-        return;
-    }
-    frontIdx = rearIdx = -1;
-    cout << "Seluruh antrian telah dihapus.\n";
-}
-
 void display() {
     if (isEmpty()) {
         cout << "Antrian kosong.\n";
@@ -67,7 +49,19 @@ void display() {
     cout << "Isi antrian: ";
     for (int i = frontIdx; i <= rearIdx; i++)
         cout << q[i] << " ";
-    cout << "\n";
+    cout << endl;
+}
+
+void peek() {
+    if (isEmpty())
+        cout << "Antrian kosong.\n";
+    else
+        cout << "Tiket paling depan adalah nomor: " << q[frontIdx] << endl;
+}
+
+void clearQueue() {
+    frontIdx = rearIdx = -1;
+    cout << "Seluruh antrian telah dihapus.\n";
 }
 
 void checkFull() {
@@ -90,10 +84,11 @@ int main() {
             case 3: display(); break;
             case 4: peek(); break;
             case 5: checkFull(); break;
-            case 6: isClear(); break;
-            case 7: isClear(); cout << "Antrian dibersihkan. Terima kasih!\n"; break;
+            case 6: clearQueue(); break;
+            case 7: clearQueue(); cout << "Terima kasih!\n"; break;
             default: cout << "Pilihan tidak valid!\n";
         }
     } while (pilih != 7);
+
     return 0;
 }
