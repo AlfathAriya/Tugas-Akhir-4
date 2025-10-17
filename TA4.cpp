@@ -8,10 +8,19 @@ bool isEmpty() {
     return frontIdx == -1;
 }
 
+bool isFull() {
+    return rearIdx == MAX - 1;
+}
+
 void enqueue() {
     int tiket;
     cout << "Masukkan nomor tiket: ";
     cin >> tiket;
+
+    if (isFull()) {
+        cout << "Antrian penuh! Tidak dapat menambah tiket.\n";
+        return;
+    }
 
     if (isEmpty()) frontIdx = 0;
     rearIdx++;
@@ -25,8 +34,28 @@ void dequeue() {
         cout << "Antrian kosong!\n";
         return;
     }
+
     cout << "Tiket nomor " << q[frontIdx++] << " telah dihapus.\n";
-    if (frontIdx > rearIdx) frontIdx = rearIdx = -1;
+
+    if (frontIdx > rearIdx)
+        frontIdx = rearIdx = -1;
+}
+
+void peek() {
+    if (isEmpty()) {
+        cout << "Antrian kosong!\n";
+        return;
+    }
+    cout << "Tiket paling depan adalah nomor: " << q[frontIdx] << "\n";
+}
+
+void isClear() {
+    if (isEmpty()) {
+        cout << "Antrian sudah kosong.\n";
+        return;
+    }
+    frontIdx = rearIdx = -1;
+    cout << "Seluruh antrian telah dihapus.\n";
 }
 
 void display() {
@@ -34,24 +63,37 @@ void display() {
         cout << "Antrian kosong.\n";
         return;
     }
+
     cout << "Isi antrian: ";
     for (int i = frontIdx; i <= rearIdx; i++)
         cout << q[i] << " ";
     cout << "\n";
 }
 
-int main() {
-    cout << "=== SISTEM ANTRIAN TIKET ===";
+void checkFull() {
+    if (isFull())
+        cout << "Status: Antrian penuh.\n";
+    else
+        cout << "Status: Antrian belum penuh.\n";
+}
 
+int main() {
+    cout << "=== SISTEM ANTRIAN TIKET KERETA ===";
     int pilih;
     do {
-        cout << "\n1. Tambah Tiket\n2. Hapus Tiket\n3. Lihat Antrian\n4. Keluar\nPilih: ";
+        cout << "\n\nPilih: 1.Tambah Tiket  2.Hapus Tiket  3.Lihat Antrian  4.Lihat Terdepan  5.Cek Penuh  6.Clear  7.Keluar\nMasukkan pilihan: ";
         cin >> pilih;
 
-        if (pilih == 1) enqueue();
-        else if (pilih == 2) dequeue();
-        else if (pilih == 3) display();
-    } while (pilih != 4);
-
-    cout << "Terima kasih\n";
+        switch (pilih) {
+            case 1: enqueue(); break;
+            case 2: dequeue(); break;
+            case 3: display(); break;
+            case 4: peek(); break;
+            case 5: checkFull(); break;
+            case 6: isClear(); break;
+            case 7: isClear(); cout << "Antrian dibersihkan. Terima kasih!\n"; break;
+            default: cout << "Pilihan tidak valid!\n";
+        }
+    } while (pilih != 7);
+    return 0;
 }
