@@ -4,10 +4,6 @@ using namespace std;
 const int MAX = 1000;
 int q[MAX], frontIdx = -1, rearIdx = -1;
 
-bool isEmpty() {
-    return frontIdx == -1;
-}
-
 bool isFull() {
     return rearIdx == MAX - 1;
 }
@@ -22,14 +18,14 @@ void enqueue() {
     cout << "Masukkan nomor tiket: ";
     cin >> tiket;
 
-    if (isEmpty()) frontIdx = 0;
+    if (frontIdx == -1) frontIdx = 0;
     q[++rearIdx] = tiket;
 
     cout << "Tiket nomor " << tiket << " ditambahkan ke antrian.\n";
 }
 
 void dequeue() {
-    if (isEmpty()) {
+    if (frontIdx == -1) {
         cout << "Antrian kosong!\n";
         return;
     }
@@ -41,7 +37,7 @@ void dequeue() {
 }
 
 void display() {
-    if (isEmpty()) {
+    if (frontIdx == -1) {
         cout << "Antrian kosong.\n";
         return;
     }
@@ -53,7 +49,7 @@ void display() {
 }
 
 void peek() {
-    if (isEmpty())
+    if (frontIdx == -1)
         cout << "Antrian kosong.\n";
     else
         cout << "Tiket paling depan adalah nomor: " << q[frontIdx] << endl;
