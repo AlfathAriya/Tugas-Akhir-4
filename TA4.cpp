@@ -1,11 +1,15 @@
 #include <iostream>
 using namespace std;
 
-const int MAX = 1000;
-int q[MAX], frontIdx = -1, rearIdx = -1;
+const int MAXN = 1000;
+int q[MAXN], frontIdx = -1, rearIdx = -1;
 
 bool isFull() {
-    return rearIdx == MAX - 1;
+    return (frontIdx == (rearIdx + 1) % MAXN);
+}
+
+bool isEmpty() {
+    return frontIdx == -1;
 }
 
 void enqueue() {
@@ -18,38 +22,49 @@ void enqueue() {
     cout << "Masukkan nomor tiket: ";
     cin >> tiket;
 
-    if (frontIdx == -1) frontIdx = 0;
-    q[++rearIdx] = tiket;
+    if (isEmpty()) {
+        frontIdx = rearIdx = 0;
+    } else {
+        rearIdx = (rearIdx + 1) % MAXN;
+    }
 
+    q[rearIdx] = tiket;
     cout << "Tiket nomor " << tiket << " ditambahkan ke antrian.\n";
 }
 
 void dequeue() {
-    if (frontIdx == -1) {
-        cout << "Antrian kosong!\n";
+    if (isEmpty()) {
+        cout << "Antrian kosong\n";
         return;
     }
 
-    cout << "Tiket nomor " << q[frontIdx++] << " telah dihapus.\n";
+    cout << "Dequeue " << q[frontIdx] << " berhasil\n";
 
-    if (frontIdx > rearIdx)
+    if (frontIdx == rearIdx) {
         frontIdx = rearIdx = -1;
+    } else {
+        frontIdx = (frontIdx + 1) % MAXN;
+    }
 }
 
 void display() {
-    if (frontIdx == -1) {
+    if (isEmpty()) {
         cout << "Antrian kosong.\n";
         return;
     }
 
     cout << "Isi antrian: ";
-    for (int i = frontIdx; i <= rearIdx; i++)
+    int i = frontIdx;
+    while (true) {
         cout << q[i] << " ";
+        if (i == rearIdx) break;
+        i = (i + 1) % MAXN;
+    }
     cout << endl;
 }
 
 void peek() {
-    if (frontIdx == -1)
+    if (isEmpty())
         cout << "Antrian kosong.\n";
     else
         cout << "Tiket paling depan adalah nomor: " << q[frontIdx] << endl;
